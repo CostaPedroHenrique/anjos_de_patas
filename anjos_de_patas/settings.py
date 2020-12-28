@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
+from decouple import config
+from dj_database_url import parse as dburl
 from pathlib import Path
 import dj_database_url
 
@@ -26,7 +28,7 @@ SECRET_KEY = 'myntzx8i9c6+1_8!w%d@mmzq9-ef8+7%(7*vb!6amnp*949#t7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["anjos-de-patas.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["anjos-de-patas.herokuapp.com", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -84,8 +86,10 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    "default":dj_database_url.config(default=f"sqlite:///{BASE_DIR}/db.sqlite3")
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+DATABASES = { 
+    'default': config('DATABASE_URL', default=default_dburl, cast=dburl), 
 }
 
 
