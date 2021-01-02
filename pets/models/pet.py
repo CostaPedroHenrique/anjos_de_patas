@@ -28,11 +28,34 @@ class Pet(models.Model):
         blank=True, null=True,
     )
 
+    ativo = models.BooleanField(
+        verbose_name="Ativo",
+        default=False,
+    )
+
+
     adotado = models.BooleanField(
         verbose_name="Adotado",
         default=False,
     )
 
+    cidade = models.CharField(
+        verbose_name="Cidade",
+        max_length=80,
+        blank=True, null=True,
+    )
+
+    uf = models.CharField(
+        verbose_name="UF",
+        max_length=4,
+        blank=True, null=True,
+    )
+
+    contato = models.CharField(
+        verbose_name="Contato",
+        max_length=25,
+        blank=True, null=True,
+    )
 
     def __str__(self):
         return self.nome

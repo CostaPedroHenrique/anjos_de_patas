@@ -4,30 +4,14 @@
   {% include 'head.html' %}
   <body>
 
-	  {% include 'nav.html' %} 
+	{% include 'nav.html' %} 
     <!--nav-->
-	
-<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1.jpg' %});" data-stellar-background-ratio="0.5">
-	<div class="overlay"></div>
-	<div class="container">
-	<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-		<div class="col-md-11 ftco-animate text-center">
-		<h1 class="mb-4">Amigo não se compra</h1>
-		<p><a href="#" class="btn btn-primary mr-md-4 py-3 px-4">Ver mais <span class="ion-ios-arrow-forward"></span></a></p>
-		</div>
-	</div>
-	</div>
-</div>
 
-{% include 'components/cards.html' %}
+    {% block main %}
 
-{% include 'components/duvidas.html' %}
+    {% endblock %}
 
-{% include 'components/disponiveis.html' %}
-
-{% include 'components/adotados.html' %}
-
-{% include 'footer.html' %}
+    {% include 'footer.html' %}
 
 
 
@@ -53,7 +37,39 @@
 <script src="{% static 'js/google-map.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 
+<script>
+  var dados = [];
+var url = 'https://gist.githubusercontent.com/letanure/3012978/raw/36fc21d9e2fc45c078e0e0e07cce3c81965db8f9/estados-cidades.json';
 
+$(document).ready(function () {
+      
+  
+    $.getJSON(url, function (data)  { 
+      dados = data;
+      var option_estado = '<option value="none">Selecione um estado... </option>';
+      $.each(data.estados, function (i, val) {
+          option_estado +=  '<option value="' + val.nome + '">' + val.nome + '</option>';
+      });    
+      $('#estados').html(option_estado);
+    });
+  
+    $('#estados').change(poulateCidades);
+                              
+});
+        
+function poulateCidades(){
+  var idx            = $(this)[0].selectedIndex;
+  var val            = $(this).val();
+  var cidades        = (idx > 0)? dados.estados[idx-1].cidades : ['Selecione um estado'];
+  var option_cidades = '';
+
+  $.each(cidades, function(i, val){
+    option_cidades  += '<option value="' + val + '">' + val + '</option>';
+  });
+
+  $('#cidades').html(option_cidades);
+}    
+</script>
 
 </body>
 </html>
