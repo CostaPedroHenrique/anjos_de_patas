@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import (
     ComoFunciona,
     Contato,
@@ -8,7 +8,8 @@ from .models import (
 )
 
 from pets.models import Pet
-# Create your views here.
+
+from .forms import ContatoForm
 
 cidade = None
 
@@ -72,10 +73,17 @@ def veterinarios(request):
 
 
 def contato(request):
+    form = ContatoForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('contato')
+
     return render(
         request,
-        'contato.html',
+        'contato.html', 
         {
-            
+            'menu': 'contato'
         }
     )
